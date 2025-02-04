@@ -160,6 +160,58 @@ fn three_sum3(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
     ans
 }
 
+fn two_sum4(numbers: &Vec<i32>, i: usize, j:usize, target: i32) -> Vec<Vec<i32>> {
+    let mut i = i;
+    let mut j = j;
+    let mut ans: Vec<Vec<i32>> = vec![];
+
+    while i < j {
+        let left = numbers[i];
+        let right = numbers[j];
+        let v = left + right;
+        if v == target {
+            ans.push(vec![numbers[i], numbers[j]]);
+            while i < j && numbers[i] == left {
+                i += 1;
+            }
+            while i < j && numbers[j] == right {
+                j -= 1;
+            }
+        } else if v < target {
+            while i < j && numbers[i] == left {
+                i += 1;
+            }
+        } else if v > target {
+            while i < j && numbers[j] == right {
+                j -= 1;
+            }
+        }
+    }
+
+    ans
+}
+
+fn three_sum4(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
+    nums.sort();
+    let mut ans: Vec<Vec<i32>> = vec![];
+    let mut i = 0;
+
+    while i < nums.len() - 2 && nums[i] <= 0 {
+        let target = nums[i];
+        let two = two_sum4(&nums, i +1, nums.len()-1, -target);
+        for mut v in two {
+            v.push(target);
+            ans.push(v);
+        }
+
+        while i < nums.len() && nums[i] == target  {
+            i += 1;
+        }
+
+    }
+    ans
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -195,5 +247,11 @@ mod tests {
         compare_vec(three_sum3(vec![-1,0,1,2,-1,-4]), vec![vec![-1,-1,2], vec![-1,0,1]]);
         compare_vec(three_sum3(vec![0,1,1]), empty);
         compare_vec(three_sum3(vec![0,0,0]), vec![vec![0,0,0]]);
+
+        let empty:Vec<Vec<i32>> = vec![];
+
+        compare_vec(three_sum4(vec![-1,0,1,2,-1,-4]), vec![vec![-1,-1,2], vec![-1,0,1]]);
+        compare_vec(three_sum4(vec![0,1,1]), empty);
+        compare_vec(three_sum4(vec![0,0,0]), vec![vec![0,0,0]]);
     }
 }
