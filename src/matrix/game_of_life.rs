@@ -3,25 +3,25 @@ use std::collections::HashMap;
 fn game_of_life(board: &mut Vec<Vec<i32>>) {
     let rows = board.len() - 1;
     let cols = board[0].len() -1;
-    let mut dead = HashMap::new();
-    let mut live = HashMap::new();
+    let mut dead = vec![];
+    let mut live = vec![];
 
     for i in 0..=rows {
         for j in 0..=cols {
-            let mut left = if j > 0 {
+            let left = if j > 0 {
                 j - 1
             } else {
                 0
             };
-            let mut right = cols.min(j+1);
+            let right = cols.min(j+1);
 
-            let mut top = if i > 0 {
+            let top = if i > 0 {
                 i - 1
             } else {
                 0
             };
 
-            let mut bottom = rows.min(i+1);
+            let bottom = rows.min(i+1);
 
             let mut lives = 0;
             for r in top..=bottom {
@@ -32,9 +32,9 @@ fn game_of_life(board: &mut Vec<Vec<i32>>) {
                 }
             }
             if board[i][j] == 1 && (lives < 2 || lives > 3) {
-                dead.insert(i, j);
+                dead.push((i, j))
             } else if board[i][j] == 0 && lives==3 {
-                live.insert(i, j);
+                live.push((i, j));
             }
 
 

@@ -4,3 +4,6 @@ mod word_pattern;
 mod valid_anagram;
 mod group_anagrams;
 mod two_sun;
+mod happy_number;
+mod contains_duplicate_ii;
+mod longest_consecutive_sequence;

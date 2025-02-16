@@ -36,6 +36,21 @@ fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     ans
 }
 
+fn group_anagrams2(strs: Vec<String>) -> Vec<Vec<String>> {
+    let mut maps: HashMap<Vec<char>, Vec<String>> = HashMap::new();
+
+    for i in 0..strs.len() {
+        let mut chars: Vec<char> = strs[i].chars().collect();
+        chars.sort();
+
+        maps.entry(chars).or_insert(vec![]).push(strs[i].clone());
+
+    }
+
+
+    maps.values().cloned().collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

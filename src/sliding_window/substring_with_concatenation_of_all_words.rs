@@ -38,6 +38,48 @@ fn find_substring(s: String, words: Vec<String>) -> Vec<i32> {
     ans
 }
 
+fn find_substring2(s: String, words: Vec<String>) -> Vec<i32> {
+    let mut ans = vec![];
+
+    let num_words = words.len();
+    let word_len = words[0].len();
+    let str_len = num_words * word_len;
+
+    if str_len > s.len() {
+        return ans;
+    }
+
+    let mut word_map: HashMap<&str, i32> = HashMap::new();
+    for word in &words {
+        *word_map.entry(word).or_insert(0) += 1;
+    }
+
+
+    for i in 0..=s.len() - str_len {
+        let mut seen_words = HashMap::new();
+        let mut j = 0;
+
+        while j < num_words {
+            let word_start = i + j * word_len;
+            let word: &str = &s[word_start..word_start + word_len];
+            if !word_map.contains_key(word) {
+                break;
+            }
+            *seen_words.entry(word).or_insert(0) += 1;
+
+            if seen_words[word] > *word_map.get(word).unwrap() {
+                break;
+            }
+            j += 1;
+        }
+
+        if j == num_words {
+            ans.push(i as i32);
+        }
+    }
+    ans
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
